@@ -5,12 +5,11 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq 
 
 #Open a fasta file and parse the headers and sequence 
-with open("Example.fasta") as handle:
+with open("SARS_CoV-2_UP000464024_Proteome.fasta") as handle:
     for record in SeqIO.parse(handle, "fasta"):
         print("Id: %s" % record.id) 
         print("Name: %s" % record.name) 
         print("Description: %s" % record.description) 
-        print("Annotations: %s" % record.annotations) 
         print("Sequence Data: %s" % record.seq)
         
 #blast using the gi accession
