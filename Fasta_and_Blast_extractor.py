@@ -16,12 +16,15 @@ with open("SARS_CoV-2_UP000464024_Proteome.fasta") as handle:
 from Bio.Blast import NCBIWWW
 result_handle = NCBIWWW.qblast("blastp", "nr", "1796318600") #SARS-CoV-2 envelope
 
-#result_handle2 = NCBIWWW.qblast("blastp", "p", "1798174255") SARS-CoV-2 nucleocapsid
-#result_handle2 = NCBIWWW.qblast("blastp", "p", "1796318601") SARS-CoV-2 membrane glycoprotein
+#Can do similarly with other SARS-CoV2 proteins
+#result_handle2 = NCBIWWW.qblast("blastp", "nr", "1798174255") SARS-CoV-2 nucleocapsid
+#result_handle2 = NCBIWWW.qblast("blastp", "nr", "1796318601") SARS-CoV-2 membrane glycoprotein
 
+# Write the blast results to my_blast.xml
 with open("my_blast.xml", "w") as out_handle:
     out_handle.write(result_handle.read())
 
+# Read the blast output in my_blast.xml file and print the alignments
 from Bio.Blast import NCBIXML
 result=open("my_blast.xml","r")
 records= NCBIXML.parse(result)
@@ -38,3 +41,14 @@ for alignment in item.alignments:
                          print(hsp.query[0:90] + '...')
                          print(hsp.match[0:90] + '...')
                          print(hsp.sbjct[0:90] + '...')
+                        
+# Set Evalue threshold and print header if expect value is less than threshold
+E_VALUE_THRESH = 1e-20 
+for record in NCBIXML.parse(open("my_blast.xml")): 
+    if record.alignments: 
+        print("\n") 
+        print("query: %s" % record.query[:100]) 
+        for align in record.alignments:
+            for hsp in align.hsps: 
+                if hsp.expect < E_VALUE_THRESH: 
+                    print("match: %s " % align.title[:100])
