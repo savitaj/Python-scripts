@@ -1,3 +1,3 @@
 # Python-scripts
 
-Some simple Python scripts for the scientists for use in their research. 
+Some simple Python scripts as jupyter notebooks, for the scientists for use in their research. 
